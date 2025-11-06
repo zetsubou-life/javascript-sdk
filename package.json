@@ -1,6 +1,6 @@
 {
   "name": "@zetsubou-life/sdk",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "JavaScript SDK for the Zetsubou.life API v2",
   "main": "dist/index.js",
   "module": "dist/index.esm.js",
