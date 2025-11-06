@@ -2,7 +2,7 @@
 
 A comprehensive JavaScript/TypeScript SDK for the Zetsubou.life API v2, providing easy access to AI-powered tools, encrypted file storage, chat capabilities, and webhooks.
 
-[![npm version](https://badge.fury.io/js/%40zetsubou%2Fsdk.svg)](https://badge.fury.io/js/%40zetsubou%2Fsdk)
+[![npm version](https://badge.fury.io/js/%40zetsubou-life%2Fsdk.svg)](https://badge.fury.io/js/%40zetsubou-life%2Fsdk)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.0+-blue.svg)](https://www.typescriptlang.org/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
@@ -21,19 +21,19 @@ A comprehensive JavaScript/TypeScript SDK for the Zetsubou.life API v2, providin
 ## Installation
 
 ```bash
-npm install @zetsubou/sdk
+npm install @zetsubou-life/sdk
 ```
 
 Or with yarn:
 
 ```bash
-yarn add @zetsubou/sdk
+yarn add @zetsubou-life/sdk
 ```
 
 ## Quick Start
 
 ```typescript
-import { ZetsubouClient } from '@zetsubou/sdk';
+import { ZetsubouClient } from '@zetsubou-life/sdk';
 
 // Initialize the client
 const client = new ZetsubouClient({
