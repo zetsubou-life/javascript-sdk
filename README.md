@@ -267,16 +267,13 @@ The SDK provides access to 16 AI-powered tools across 3 tiers:
 - **Video Batch Resize** (`video_batch_resize`): Resize multiple videos
 - **Extract Frames** (`extract_frames`): Extract frames from videos
 - **Clip Maker** (`clip_maker`): AI music video generator with audio support
+- **PSD Layer Extractor** (`psd_extractor`): Extract individual layers from Photoshop PSD files
 
 ### Advanced Tools (Pro Tier)
 - **Datamosher** (`datamosher`): Glitch art video effects with audio
 - **Datamelter** (`datamelter`): Melting video effects with audio
-- **Orb Maker** (`orb_maker`): 3D orb generation
 - **Background-Foreground Matcher** (`bgfg_matcher`): Match and composite images
-
-Additional tools:
-- **Swapperooni** (`swapperooni`): Advanced image manipulation
-- **YOLOX Detector** (`yolox_detector`): Object detection
+- **Batch Bloomer** (`batch_bloomer`): Apply bloom effects to multiple images/videos
 
 ## Error Handling
 
