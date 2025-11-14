@@ -16,7 +16,7 @@ export interface ErrorData {
 export class ZetsubouError extends Error {
   public readonly errorData: ErrorData;
   public readonly code: string;
-  public readonly statusCode?: number;
+  public readonly statusCode: number | undefined;
 
   constructor(message: string, errorData: ErrorData = {}) {
     super(message);

@@ -134,7 +134,11 @@ export class VFSService extends BaseService {
    * Get files by MIME type
    */
   async getFilesByType(mimeType: string, limit?: number): Promise<VFSNode[]> {
-    return this.searchFiles({ mimeType, limit });
+    const params: { mimeType: string; limit?: number } = { mimeType };
+    if (limit !== undefined) {
+      params.limit = limit;
+    }
+    return this.searchFiles(params);
   }
 
   /**

@@ -94,10 +94,10 @@ export class JobsService extends BaseService {
   /**
    * Download job results and save to a file (Node.js only)
    */
-  async downloadResultsToFile(jobId: string, filePath: string): Promise<void> {
+  async downloadResultsToFile(_jobId: string, _filePath: string): Promise<void> {
     // This would need to be implemented differently for Node.js
     // For now, we'll just return the blob
-    const blob = await this.downloadResults(jobId);
+    await this.downloadResults(_jobId);
     
     // In a real implementation, you'd use fs to write the blob to file
     throw new Error('downloadResultsToFile not implemented for browser environment');
@@ -109,19 +109,19 @@ export class JobsService extends BaseService {
   async getProgress(jobId: string): Promise<{
     status: string;
     progress: number;
-    error?: string;
+    error: string | undefined;
     created_at: string;
-    updated_at?: string;
-    completed_at?: string;
+    updated_at: string | undefined;
+    completed_at: string | undefined;
   }> {
     const job = await this.get(jobId);
     return {
       status: job.status,
       progress: job.progress,
-      error: job.error,
+      error: job.error ?? undefined,
       created_at: job.created_at,
-      updated_at: job.updated_at,
-      completed_at: job.completed_at
+      updated_at: job.updated_at ?? undefined,
+      completed_at: job.completed_at ?? undefined
     };
   }
 }

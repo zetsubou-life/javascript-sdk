@@ -89,7 +89,11 @@ export class WebhooksService extends BaseService {
    */
   async createJobWebhook(url: string, secret?: string): Promise<Webhook> {
     const events = ['job.completed', 'job.failed', 'job.cancelled'];
-    return this.create({ url, events, secret });
+    const params: WebhookCreateParams = { url, events };
+    if (secret !== undefined) {
+      params.secret = secret;
+    }
+    return this.create(params);
   }
 
   /**
@@ -97,7 +101,11 @@ export class WebhooksService extends BaseService {
    */
   async createFileWebhook(url: string, secret?: string): Promise<Webhook> {
     const events = ['file.uploaded', 'file.downloaded'];
-    return this.create({ url, events, secret });
+    const params: WebhookCreateParams = { url, events };
+    if (secret !== undefined) {
+      params.secret = secret;
+    }
+    return this.create(params);
   }
 
   /**
@@ -105,7 +113,11 @@ export class WebhooksService extends BaseService {
    */
   async createStorageWebhook(url: string, secret?: string): Promise<Webhook> {
     const events = ['storage.quota_warning', 'storage.quota_exceeded'];
-    return this.create({ url, events, secret });
+    const params: WebhookCreateParams = { url, events };
+    if (secret !== undefined) {
+      params.secret = secret;
+    }
+    return this.create(params);
   }
 
   /**
@@ -113,7 +125,11 @@ export class WebhooksService extends BaseService {
    */
   async createAllEventsWebhook(url: string, secret?: string): Promise<Webhook> {
     const events = Object.keys(await this.getAvailableEvents());
-    return this.create({ url, events, secret });
+    const params: WebhookCreateParams = { url, events };
+    if (secret !== undefined) {
+      params.secret = secret;
+    }
+    return this.create(params);
   }
 
   /**
@@ -154,7 +170,7 @@ export class WebhooksService extends BaseService {
   /**
    * Get webhook delivery history (if available)
    */
-  async getDeliveryHistory(webhookId: number, limit: number = 50): Promise<any[]> {
+  async getDeliveryHistory(_webhookId: number, _limit: number = 50): Promise<any[]> {
     // This would require additional API endpoints
     // For now, return empty array
     return [];
@@ -163,7 +179,7 @@ export class WebhooksService extends BaseService {
   /**
    * Verify webhook signature
    */
-  verifySignature(payload: string, signature: string, secret: string): boolean {
+  verifySignature(_payload: string, _signature: string, _secret: string): boolean {
     // This would need to be implemented using a crypto library
     // For now, return true (signature verification should be done server-side)
     return true;
