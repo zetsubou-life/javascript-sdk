@@ -11,7 +11,8 @@ import {
   VFSService,
   ChatService,
   WebhooksService,
-  AccountService
+  AccountService,
+  NFTService
 } from './services';
 import {
   ZetsubouError,
@@ -46,6 +47,7 @@ export class ZetsubouClient {
   public readonly chat: ChatService;
   public readonly webhooks: WebhooksService;
   public readonly account: AccountService;
+  public readonly nft: NFTService;
 
   constructor(config: ZetsubouClientConfig) {
     this.retryAttempts = config.retryAttempts || 3;
@@ -92,6 +94,7 @@ export class ZetsubouClient {
     this.chat = new ChatService(this);
     this.webhooks = new WebhooksService(this);
     this.account = new AccountService(this);
+    this.nft = new NFTService(this);
   }
 
   /**

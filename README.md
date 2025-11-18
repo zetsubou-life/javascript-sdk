@@ -8,7 +8,7 @@ A comprehensive JavaScript/TypeScript SDK for the Zetsubou.life API v2, providin
 
 ## Features
 
-- 🛠️ **AI Tools**: Execute 16+ AI-powered tools for image and video processing
+- 🛠️ **AI Tools**: Execute 15+ AI-powered tools for image and video processing (dynamically loaded from API)
 - 🔒 **Encrypted Storage**: Zero-knowledge file storage with client-side encryption
 - 💬 **Chat API**: Conversational AI with multiple models (Llama 3.2, Qwen 2.5 VL, etc.)
 - 📊 **Job Management**: Track, monitor, and download job results
@@ -76,7 +76,7 @@ const job = await client.tools.execute(
 
 // Wait for completion
 const completedJob = await client.jobs.waitForCompletion(job.id);
-console.log(`Job completed! Status: ${completed Job.status}`);
+  console.log(`Job completed! Status: ${completedJob.status}`);
 
 // Download results
 const resultsBlob = await client.jobs.downloadResults(job.id);
@@ -252,7 +252,7 @@ await client.account.deleteApiKey(keyId);
 
 ## Available Tools
 
-The SDK provides access to 16 AI-powered tools across 3 tiers:
+The SDK provides access to 15+ AI-powered tools across 3 tiers. Tools are dynamically loaded from the API, so new tools become available automatically without SDK updates.
 
 ### Basic Tools (Free Tier)
 - **Remove Background** (`remove_bg`): AI-powered background removal with 15 models
@@ -274,6 +274,8 @@ The SDK provides access to 16 AI-powered tools across 3 tiers:
 - **Datamelter** (`datamelter`): Melting video effects with audio
 - **Background-Foreground Matcher** (`bgfg_matcher`): Match and composite images
 - **Batch Bloomer** (`batch_bloomer`): Apply bloom effects to multiple images/videos
+
+> **Note**: Tool availability is determined by your account tier and API key scopes. Use `client.tools.list()` to see all tools available to your account.
 
 ## Error Handling
 

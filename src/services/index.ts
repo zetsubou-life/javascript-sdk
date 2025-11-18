@@ -11,3 +11,14 @@ export { VFSService } from './vfs';
 export { ChatService } from './chat';
 export { WebhooksService } from './webhooks';
 export { AccountService } from './account';
+export { NFTService } from './nft';
+export type {
+  NFTProject,
+  NFTLayer,
+  NFTLayerTrait,
+  NFTGeneration,
+  NFTLimits,
+  CreateProjectOptions,
+  CreateLayerOptions,
+  CreateGenerationOptions
+} from './nft';
