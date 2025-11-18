@@ -17,6 +17,8 @@ A comprehensive JavaScript/TypeScript SDK for the Zetsubou.life API v2, providin
 - 📈 **Usage Tracking**: Monitor storage, API usage, and job statistics
 - 🌐 **Browser & Node.js**: Works in both browser and Node.js environments
 - 📱 **TypeScript**: Full TypeScript support with comprehensive type definitions
+- 🎨 **NFT Generation**: Create and manage NFT projects, layers, and collections
+- 🔷 **GraphQL API**: Flexible query-based interface for fetching multiple resources
 
 ## Installation
 
@@ -248,6 +250,120 @@ console.log(`New API key: ${apiKey.key}`);
 
 // Delete API key
 await client.account.deleteApiKey(keyId);
+```
+
+### 🎨 NFT Generation
+
+Create and manage NFT projects, layers, and generations:
+
+```typescript
+// Get NFT limits
+const limits = await client.nft.getLimits();
+console.log(`Tier: ${limits.tier}, Max projects: ${limits.limits.max_projects}`);
+
+// List projects
+const projects = await client.nft.listProjects(false);
+projects.forEach(project => {
+  console.log(`${project.name} - ${project.layer_count} layers`);
+});
+
+// Create project
+const project = await client.nft.createProject({
+  name: 'Cool Apes Club',
+  collection_config: {
+    network: 'solana',
+    name: 'Cool Apes Club',
+    symbol: 'CAC',
+    description: '777 unique apes',
+    seller_fee_basis_points: 500
+  },
+  generation_config: {
+    format: { width: 2000, height: 2000 }
+  }
+});
+
+// Create layer
+const layer = await client.nft.createLayer(project.id, {
+  name: 'Background',
+  order_index: 0,
+  is_required: true
+});
+
+// Start generation
+const generation = await client.nft.createGeneration(project.id, {
+  total_pieces: 777
+});
+
+// Poll for completion
+while (generation.status !== 'completed') {
+  if (generation.status === 'failed') {
+    console.error(`Generation failed: ${generation.error_message}`);
+    break;
+  }
+  await new Promise(resolve => setTimeout(resolve, 5000));
+  const updated = await client.nft.getGeneration(generation.id);
+  generation.status = updated.status;
+  console.log(`Status: ${generation.status}`);
+}
+```
+
+### 🔷 GraphQL API
+
+Execute GraphQL queries and mutations:
+
+```typescript
+// Simple query
+const result = await client.graphql.query(`
+  query {
+    viewer {
+      username
+      tier
+    }
+    jobs(limit: 5) {
+      jobs {
+        job_id
+        tool
+        status
+      }
+    }
+  }
+`);
+console.log(`User: ${result.data.viewer.username}`);
+
+// Query with variables
+const result = await client.graphql.query(
+  `
+    query GetJob($jobId: String!) {
+      jobs(job_id: $jobId) {
+        jobs {
+          job_id
+          status
+        }
+      }
+    }
+  `,
+  { variables: { jobId: 'your-job-id' } }
+);
+
+// Mutation
+const result = await client.graphql.mutate(`
+  mutation {
+    createNftProject(
+      name: "My Project"
+      collectionConfig: {
+        network: "solana"
+        name: "My Project"
+        symbol: "MP"
+      }
+    ) {
+      success
+      project {
+        id
+        name
+      }
+    }
+  }
+`);
 ```
 
 ## Available Tools

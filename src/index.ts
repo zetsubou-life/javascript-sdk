@@ -52,6 +52,11 @@ export type {
   CreateLayerOptions,
   CreateGenerationOptions
 } from './services/nft';
+export { GraphQLService } from './services/graphql';
+export type {
+  GraphQLResponse,
+  GraphQLOptions
+} from './services/graphql';
 
 // Version
 export { VERSION } from './constants';

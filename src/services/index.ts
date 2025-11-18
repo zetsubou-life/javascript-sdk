@@ -12,6 +12,7 @@ export { ChatService } from './chat';
 export { WebhooksService } from './webhooks';
 export { AccountService } from './account';
 export { NFTService } from './nft';
+export { GraphQLService } from './graphql';
 export type {
   NFTProject,
   NFTLayer,
@@ -22,3 +23,7 @@ export type {
   CreateLayerOptions,
   CreateGenerationOptions
 } from './nft';
+export type {
+  GraphQLResponse,
+  GraphQLOptions
+} from './graphql';
