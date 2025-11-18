@@ -5,7 +5,6 @@
  */
 
 import { BaseService } from './base';
-import { ZetsubouClient } from '../client';
 
 export interface NFTProject {
   id: string;
