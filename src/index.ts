@@ -31,7 +31,10 @@ export {
   ChatMessage,
   Webhook,
   Account,
-  StorageQuota
+  StorageQuota,
+  SharedFolder,
+  SharedFolderDetail,
+  Shortcut
 } from './models';
 
 // Re-export services for advanced usage

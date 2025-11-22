@@ -5,7 +5,7 @@
  */
 
 import { BaseService } from './base';
-import { VFSNode, VFSListParams } from '../models';
+import { VFSNode, VFSListParams, SharedFolder, SharedFolderDetail, Shortcut } from '../models';
 import { ZetsubouClient } from '../client';
 
 export class VFSService extends BaseService {
@@ -163,5 +163,36 @@ export class VFSService extends BaseService {
     return allFiles.filter(file => 
       file.mime_type && videoTypes.includes(file.mime_type)
     );
+  }
+
+  /**
+   * List folders shared with the current user
+   */
+  async listSharedFolders(): Promise<SharedFolder[]> {
+    const response = await this.client.get('/api/v2/shared-folders');
+    return response.data.folders;
+  }
+
+  /**
+   * Get shared folder details and contents
+   */
+  async getSharedFolder(folderId: string): Promise<SharedFolderDetail> {
+    const response = await this.client.get(`/api/v2/shared-folders/${folderId}`);
+    return response.data;
+  }
+
+  /**
+   * Create a shortcut to a shared folder in user's drive
+   */
+  async createShortcut(
+    folderId: string,
+    name?: string,
+    parentId?: string
+  ): Promise<Shortcut> {
+    const response = await this.client.post('/api/v2/shared-folders/' + folderId + '/shortcut', {
+      name,
+      parent_id: parentId
+    });
+    return response.data.shortcut;
   }
 }

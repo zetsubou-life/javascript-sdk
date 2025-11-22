@@ -165,3 +165,40 @@ export interface UsageStatsParams {
 export interface WebhookStatsParams {
   days?: number;
 }
+
+export interface SharedFolder {
+  id: string;
+  name: string;
+  path: string;
+  size_bytes: number;
+  created_at: string;
+  updated_at: string;
+  permission: 'viewer' | 'editor';
+  share_id: string;
+  owner: {
+    id: number;
+    username: string;
+    email: string;
+  };
+  share_type: 'invite_only' | 'link_access';
+}
+
+export interface SharedFolderDetail {
+  folder: VFSNode;
+  permission: 'owner' | 'viewer' | 'editor';
+  is_shared: boolean;
+  owner: {
+    id: number;
+    username: string;
+  };
+  files: VFSNode[];
+}
+
+export interface Shortcut {
+  id: string;
+  name: string;
+  type: string;
+  path: string;
+  target_folder_id: string;
+  created_at: string;
+}
