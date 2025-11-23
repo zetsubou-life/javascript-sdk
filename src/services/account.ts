@@ -251,4 +251,23 @@ export class AccountService extends BaseService {
       recommendations
     };
   }
+
+  /**
+   * Get wallet information including SOL and USDC balances
+   */
+  async getWalletInfo(): Promise<{
+    success: boolean;
+    deposit_address: string;
+    balance: number;
+    sol_balance: number;
+    credits_remaining: number;
+    current_overdraft: number;
+    paug_enabled: boolean;
+    max_monthly_spend: number;
+    tier: string;
+    two_factor_enabled: boolean;
+  }> {
+    const response = await this.client.get('/api/billing/wallet/info');
+    return response.data;
+  }
 }

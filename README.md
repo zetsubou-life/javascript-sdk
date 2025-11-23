@@ -147,6 +147,12 @@ await client.vfs.deleteNode(node.id);
 // Search files by type
 const images = await client.vfs.getImages(100);
 const videos = await client.vfs.getVideos(100);
+
+// Delete workspace (deletes all associated folders)
+const success = await client.vfs.deleteWorkspace('workspace-uuid');
+if (success) {
+  console.log('Workspace deleted successfully');
+}
 ```
 
 ### 💬 Chat Integration
@@ -166,18 +172,32 @@ const conversation = await client.chat.createConversation(
 
 // Send messages
 const message = await client.chat.sendMessage(
-  conversation.id,
+  conversation.uuid,
   'Hello! Can you help me process some images?'
 );
 
 // Get conversation history
-const messages = await client.chat.getMessages(conversation.id, 50);
+const messages = await client.chat.getMessages(conversation.uuid);
 messages.forEach(msg => {
   console.log(`${msg.role}: ${msg.content}`);
 });
 
+// Export conversation in various formats
+// JSON export
+const jsonData = await client.chat.exportConversation(conversation.uuid, 'json');
+
+// Markdown export
+const mdContent = await client.chat.exportConversation(conversation.uuid, 'md');
+
+// HTML export (styled)
+const htmlContent = await client.chat.exportConversation(conversation.uuid, 'html');
+
+// PDF export (returns Blob)
+const pdfBlob = await client.chat.exportConversation(conversation.uuid, 'pdf');
+const pdfUrl = URL.createObjectURL(pdfBlob);
+
 // Delete conversation
-await client.chat.deleteConversation(conversation.id);
+await client.chat.deleteConversation(conversation.uuid);
 ```
 
 ### 🪝 Webhooks
@@ -307,11 +327,36 @@ while (generation.status !== 'completed') {
 }
 ```
 
+### 💰 Wallet & Billing
+
+Get wallet information with dual-currency support:
+
+```typescript
+// Get wallet info (SOL and USDC balances)
+const wallet = await client.account.getWalletInfo();
+console.log(`Deposit Address: ${wallet.deposit_address}`);
+console.log(`USDC Balance: $${wallet.balance.toFixed(2)}`);
+console.log(`SOL Balance: ${wallet.sol_balance.toFixed(4)} SOL`);
+console.log(`Credits Remaining: ${wallet.credits_remaining}`);
+console.log(`Pay-as-you-go: ${wallet.paug_enabled ? 'Enabled' : 'Disabled'}`);
+```
+
 ### 🔷 GraphQL API
 
 Execute GraphQL queries and mutations:
 
 ```typescript
+// Create shared folder shortcut via GraphQL
+const result = await client.graphql.createSharedFolderShortcut(
+  'shared-folder-uuid',
+  'My Shortcut',
+  'parent-folder-uuid'  // Optional
+);
+if (result.data?.createSharedFolderShortcut.success) {
+  const shortcut = result.data.createSharedFolderShortcut.shortcut;
+  console.log(`Shortcut created: ${shortcut.name} at ${shortcut.path}`);
+}
+
 // Simple query
 const result = await client.graphql.query(`
   query {

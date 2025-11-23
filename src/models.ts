@@ -45,13 +45,15 @@ export interface VFSNode {
 
 export interface ChatMessage {
   id: number;
+  uuid?: string;
   role: 'user' | 'assistant' | 'system';
   content: string;
   timestamp: string;
 }
 
 export interface ChatConversation {
-  id: number;
+  id?: number;
+  uuid: string;
   title: string;
   model: string;
   created_at: string;

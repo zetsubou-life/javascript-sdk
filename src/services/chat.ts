@@ -41,61 +41,58 @@ export class ChatService extends BaseService {
   /**
    * Get details for a specific conversation
    */
-  async getConversation(conversationId: number): Promise<ChatConversation> {
-    // Note: This endpoint might not exist in the current API
-    // We'll implement it as a placeholder for future use
-    const conversations = await this.listConversations({ limit: 1000 });
-    const conversation = conversations.find(conv => conv.id === conversationId);
-    
-    if (!conversation) {
-      throw new Error(`Conversation ${conversationId} not found`);
-    }
-    
-    return conversation;
+  async getConversation(conversationUuid: string): Promise<ChatConversation> {
+    const response = await this.client.get(`/api/v2/chat/conversations/${conversationUuid}`);
+    return response.data;
   }
 
   /**
    * Delete a chat conversation
    */
-  async deleteConversation(conversationId: number): Promise<boolean> {
-    const response = await this.client.delete(`/api/v2/chat/conversations/${conversationId}`);
+  async deleteConversation(conversationUuid: string): Promise<boolean> {
+    const response = await this.client.delete(`/api/v2/chat/conversations/${conversationUuid}`);
     return response.data.success;
   }
 
   /**
    * Get all messages for a conversation
    */
-  async getMessages(conversationId: number): Promise<ChatMessage[]> {
-    const response = await this.client.get(`/api/v2/chat/conversations/${conversationId}/messages`);
+  async getMessages(conversationUuid: string): Promise<ChatMessage[]> {
+    const response = await this.client.get(`/api/v2/chat/conversations/${conversationUuid}/messages`);
     return response.data.messages;
   }
 
   /**
    * Send a message to a conversation
    */
-  async sendMessage(conversationId: number, content: string): Promise<ChatMessage> {
-    const response = await this.client.post(`/api/v2/chat/conversations/${conversationId}/messages`, {
+  async sendMessage(conversationUuid: string, content: string): Promise<ChatMessage> {
+    const response = await this.client.post(`/api/v2/chat/conversations/${conversationUuid}/messages`, {
       content
     });
     return response.data.message;
   }
 
   /**
-   * Export a conversation in JSON or Markdown format
+   * Export a conversation in various formats (json, md, html, pdf)
    */
   async exportConversation(
-    conversationId: number,
-    format: 'json' | 'md' = 'json'
+    conversationUuid: string,
+    format: 'json' | 'md' | 'html' | 'pdf' = 'json'
   ): Promise<any> {
-    const response = await this.client.get(`/api/v2/chat/conversations/${conversationId}/export`, {
-      params: { format }
+    const response = await this.client.get(`/api/v2/chat/conversations/${conversationUuid}/export`, {
+      params: { format },
+      responseType: format === 'pdf' ? 'blob' : format === 'html' ? 'text' : 'json'
     });
 
     if (format === 'json') {
       return response.data;
-    } else {
+    } else if (format === 'md' || format === 'html') {
       return response.data;
+    } else if (format === 'pdf') {
+      return response.data; // Blob
     }
+    
+    return response.data;
   }
 
   /**
@@ -122,7 +119,7 @@ export class ChatService extends BaseService {
     systemPrompt?: string
   ): Promise<{ conversation: ChatConversation; message: ChatMessage }> {
     const conversation = await this.createConversation(title, model, systemPrompt);
-    const message = await this.sendMessage(conversation.id, content);
+    const message = await this.sendMessage(conversation.uuid, content);
     return { conversation, message };
   }
 
@@ -130,7 +127,7 @@ export class ChatService extends BaseService {
    * Get conversation history with pagination
    */
   async getConversationHistory(
-    conversationId: number,
+    conversationUuid: string,
     limit: number = 50,
     offset: number = 0
   ): Promise<{
@@ -138,7 +135,7 @@ export class ChatService extends BaseService {
     total: number;
     hasMore: boolean;
   }> {
-    const messages = await this.getMessages(conversationId);
+    const messages = await this.getMessages(conversationUuid);
     
     // Simple pagination (in a real implementation, this would be server-side)
     const paginatedMessages = messages.slice(offset, offset + limit);

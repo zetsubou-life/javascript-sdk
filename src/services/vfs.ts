@@ -195,4 +195,12 @@ export class VFSService extends BaseService {
     });
     return response.data.shortcut;
   }
+
+  /**
+   * Delete a workspace and all associated folders
+   */
+  async deleteWorkspace(workspaceId: string): Promise<boolean> {
+    const response = await this.client.delete(`/api/vfs/workspace/${workspaceId}`);
+    return response.data.success;
+  }
 }

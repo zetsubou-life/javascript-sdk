@@ -95,5 +95,63 @@ export class GraphQLService extends BaseService {
     const result = await this.query<{ health: string }>('{ health }');
     return result.data?.health || 'unknown';
   }
+
+  /**
+   * Create a shortcut to a shared folder using GraphQL mutation
+   * 
+   * @example
+   * ```typescript
+   * const result = await client.graphql.createSharedFolderShortcut(
+   *   'shared-folder-uuid',
+   *   'My Shortcut'
+   * );
+   * console.log(result.data.createSharedFolderShortcut.success);
+   * ```
+   */
+  async createSharedFolderShortcut(
+    folderId: string,
+    name?: string,
+    parentId?: string
+  ): Promise<GraphQLResponse<{
+    createSharedFolderShortcut: {
+      success: boolean;
+      shortcut: {
+        id: string;
+        name: string;
+        type: string;
+        path: string;
+        target_folder_id: string;
+        created_at: string;
+      };
+      message: string;
+    };
+  }>> {
+    const variables: any = { folder_id: folderId };
+    if (name) variables.name = name;
+    if (parentId) variables.parent_id = parentId;
+
+    const mutation = `
+      mutation CreateSharedFolderShortcut($folder_id: String!, $name: String, $parent_id: String) {
+        createSharedFolderShortcut(
+          folder_id: $folder_id
+          name: $name
+          parent_id: $parent_id
+        ) {
+          success
+          shortcut {
+            id
+            name
+            type
+            path
+            target_folder_id
+            created_at
+          }
+          message
+        }
+      }
+    `;
+
+    return this.mutate(mutation, { variables });
+  }
 }
 
